@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Graph Example</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Graph Example</h1>
+
+    <div class="form-group">
+      <label for="input-value">Input Value:</label>
+      <input type="text" class="form-control" id="input-value" name="input-value">
+    </div>
+
+    <div class="form-group">
+      <label for="max-value">Max Value:</label>
+      <input type="text" class="form-control" id="max-value" name="max-value">
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="plotGraph()">Plot Graph</button>
+
+    <div class="my-5">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function plotGraph() {
+      var inputValue = parseInt(document.getElementById("input-value").value);
+      var maxValue = parseInt(document.getElementById("max-value").value);
+
+      if (inputValue > maxValue) {
+         alert("Input value cannot be greater than max value.");
+         return;
+      }
+
+      var inputPercentage = (inputValue / maxValue) * 100;
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, 'rgba(255, 99, 132, 0.2)');
+      gradient.addColorStop(1, 'rgba(54, 162, 235, 0.2)');
+      var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Input Value', 'Max Value'],
+          datasets: [{
+            label: 'Percentage',
+            data: [inputPercentage, 100],
+            backgroundColor: gradient,
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                callback: function(value) {
+                  return value + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
